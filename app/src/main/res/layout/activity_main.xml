@@ -8,30 +8,15 @@
     android:id="@+id/main_container">
 
 
-    <TextView
-        android:id="@+id/TextView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My Pet!"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        />
-
-    <TextView
-        android:id="@+id/TextView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/TextView1"
-        android:text="Now it's ****!"
-        />
 
     <TextView
         android:id="@+id/TextView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PetName!"
+        android:text="Lemmikki"
         android:textSize="10pt"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="4dp"
         />
 
     <EditText
@@ -41,7 +26,6 @@
         android:visibility="invisible"
         android:textSize="10pt"
         />
-
 
 
     <Button
@@ -94,13 +78,16 @@
         android:text="Settings"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:visibility="gone"
         />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
+        android:layout_alignParentEnd="true"
+        android:text="Insert name"
+        android:visibility="visible"
         />
 
     <ImageView
