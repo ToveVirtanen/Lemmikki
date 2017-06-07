@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
+    int BackGroundColorCurr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener1 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.setImageResource(R.drawable.stars);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageResource(R.drawable.egg);
-                    }
-                }, 1000);
+                if (BackGroundColorCurr == 0) {
+                    imageView.setImageResource(R.drawable.stars);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageResource(R.drawable.egg);
+                        }
+                    }, 1000);
+                }
             }
-
         };
         button1.setOnClickListener(listener1);
 
@@ -44,15 +46,16 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener2 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.setImageResource(R.drawable.washable);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageResource(R.drawable.egg);
-                    }
-                }, 1000);
+                if (BackGroundColorCurr == 0) {
+                    imageView.setImageResource(R.drawable.washable);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageResource(R.drawable.egg);
+                        }
+                    }, 1000);
+                }
             }
-
         };
         button2.setOnClickListener(listener2);
 
@@ -60,38 +63,59 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listener3 = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.setImageResource(R.drawable.lovable);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        imageView.setImageResource(R.drawable.egg);
-                    }
-                }, 1000);
+                if (BackGroundColorCurr==0) {
+                    imageView.setImageResource(R.drawable.lovable);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageResource(R.drawable.egg);
+                        }
+                    }, 1000);
+                }
             }
 
         };
         button3.setOnClickListener(listener3);
 
-
         Button button4 = (Button) findViewById(R.id.button4);
         View.OnClickListener listener4 = new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                if (get.RGB==0) {
+                if (BackGroundColorCurr==0) {
                     BackGroundColorCurr = 1;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
                     bgElement.setBackgroundColor(Color.BLACK);
+                    imageView.setImageResource(R.drawable.sleepable);
                 } else {
                     BackGroundColorCurr=0;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
-                    bgElement.setBackgroundColor(Color.GRAY);
+                    bgElement.setBackgroundColor(getResources().getColor(R.color.LightPink));
+                    imageView.setImageResource(R.drawable.egg);
                 }
             }
 
         };
         button4.setOnClickListener(listener4);
 
+        Button button6 = (Button) findViewById(R.id.button6);
+        View.OnClickListener listener6 = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (BackGroundColorCurr == 0) {
+                    imageView.setImageResource(R.drawable.stars);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            imageView.setImageResource(R.drawable.egg);
+                        }
+                    }, 1000);
+                }
+            }
+        };
+        button6.setOnClickListener(listener6);
+
     }
+
 }
 
 
