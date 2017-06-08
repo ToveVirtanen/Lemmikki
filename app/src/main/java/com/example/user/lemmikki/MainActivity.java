@@ -1,10 +1,14 @@
 package com.example.user.lemmikki;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,27 +17,64 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import static com.example.user.lemmikki.R.id.EditText1;
-import static com.example.user.lemmikki.R.id.button6;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.example.user.lemmikki.R.id.EditTextName;
+import static com.example.user.lemmikki.R.id.TextViewFood;
+import static com.example.user.lemmikki.R.id.TextViewName;
+import static com.example.user.lemmikki.R.id.buttonFeed;
+import static com.example.user.lemmikki.R.id.buttonName;
+import static com.example.user.lemmikki.R.id.buttonPet;
+import static com.example.user.lemmikki.R.id.buttonSleep;
+import static com.example.user.lemmikki.R.id.buttonWash;
 import static com.example.user.lemmikki.R.id.main_container;
 
-public class MainActivity extends AppCompatActivity {
+    public class MainActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
-    int BackGroundColorCurr;
-    int CheckerEditText1 = 0;
+    int BackGroundColorCurr = 0;
+    int CheckerEditTextName = 0;
+    int AppOpenedBefore = 0;
+
+    public final int MaxFood = 1000;
+    public final int MaxWash = 1000;
+    public final int MaxPet = 1000;
+    public final int MaxSleep = 1000;
+    public int CurFood;
+    public int CurWash;
+    public int CurPet;
+    public int CurSleep;
+    public int Loss;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//      Restore preferences
+        TextView textViewName = (TextView) findViewById(R.id.TextViewName);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+//      settings=null;
+        if (settings!=null) {
+            textViewName.setText(settings.getString("name","unnamed"));
+        }
+
+        CurFood=MaxFood;
+        CurWash=MaxWash;
+        CurPet=MaxPet;
+        CurSleep=MaxSleep;
+        Loss=1;
+
+
 
         final ImageView imageView = (ImageView) findViewById(R.id.egg);
 
-
-        Button button1 = (Button) findViewById(R.id.button1);
-        View.OnClickListener listener1 = new View.OnClickListener() {
+        Button buttonFeed = (Button) findViewById(R.id.buttonFeed);
+        View.OnClickListener listenerFeed = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
@@ -47,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        button1.setOnClickListener(listener1);
+        buttonFeed.setOnClickListener(listenerFeed);
 
-        Button button2 = (Button) findViewById(R.id.button2);
-        View.OnClickListener listener2 = new View.OnClickListener() {
+        Button buttonWash = (Button) findViewById(R.id.buttonWash);
+        View.OnClickListener listenerWash = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
@@ -64,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        button2.setOnClickListener(listener2);
+        buttonWash.setOnClickListener(listenerWash);
 
-        Button button3 = (Button) findViewById(R.id.button3);
-        View.OnClickListener listener3 = new View.OnClickListener() {
+        Button buttonPet = (Button) findViewById(R.id.buttonPet);
+        View.OnClickListener listenerPet = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr==0) {
@@ -82,10 +123,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-        button3.setOnClickListener(listener3);
+        buttonPet.setOnClickListener(listenerPet);
 
-        Button button4 = (Button) findViewById(R.id.button4);
-        View.OnClickListener listener4 = new View.OnClickListener() {
+        Button buttonSleep = (Button) findViewById(R.id.buttonSleep);
+        View.OnClickListener listenerSleep = new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 if (BackGroundColorCurr==0) {
@@ -102,34 +143,116 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-        button4.setOnClickListener(listener4);
+        buttonSleep.setOnClickListener(listenerSleep);
 
-        final Button button6 = (Button) findViewById(R.id.button6);
-        View.OnClickListener listener6 = new View.OnClickListener() {
+        final Button buttonName = (Button) findViewById(R.id.buttonName);
+        View.OnClickListener listenerName = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView textView3 = (TextView) findViewById(R.id.TextView3);
-                EditText editText1 = (EditText) findViewById(R.id.EditText1);
-                switch (CheckerEditText1) {
+                TextView TextViewName = (TextView) findViewById(R.id.TextViewName);
+                EditText editTextName = (EditText) findViewById(R.id.EditTextName);
+                switch (CheckerEditTextName) {
                     case 0:
-                        button6.setText("OK");
-                        textView3.setVisibility(View.INVISIBLE);
-                        editText1.setVisibility(View.VISIBLE);
-                        CheckerEditText1 = 1;
+                        buttonName.setText("Ok");
+                        TextViewName.setVisibility(View.INVISIBLE);
+                        editTextName.setVisibility(View.VISIBLE);
+                        CheckerEditTextName = 1;
                         break;
                     case 1:
-                        button6.setText("Change name");
-                        textView3.setText(editText1.getText().toString());
-                        editText1.setVisibility(View.INVISIBLE);
-                        textView3.setVisibility(View.VISIBLE);
-                        CheckerEditText1 = 0;
+                        buttonName.setText("Change name");
+                        TextViewName.setText(editTextName.getText().toString());
+                        editTextName.setVisibility(View.INVISIBLE);
+                        TextViewName.setVisibility(View.VISIBLE);
+                        CheckerEditTextName = 0;
                         break;
                     }
                 }
         };
-        button6.setOnClickListener(listener6);
+        buttonName.setOnClickListener(listenerName);
+
+//        final Button buttonDelSet = (Button) findViewById(R.id.buttonDelSet);
+//        View.OnClickListener listenerDelSet = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                settings=null;
+//            }
+//        };
+//        buttonDelSet.setOnClickListener(listenerDelSet);
+
+        final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
+        final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
+        final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
+        final TextView TextViewSleep = (TextView) findViewById(R.id.TextViewSleep);
+        TextViewFood.setText("Food: "+CurFood + "/" + MaxFood);
+        TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
+        TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
+        TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
+//        while (CurFood>0) {
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    CurFood = CurFood - Loss;
+//                    CurPet = CurPet - Loss;
+//                    CurSleep = CurSleep - Loss;
+//                    CurWash = CurWash - Loss;
+//                    TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
+//                    TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
+//                    TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
+//                    TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
+//                }
+//            }, 3000);
+//        }
+        class MyTimerTask extends TimerTask {
+
+            @Override
+            public void run() {
+                CurFood = CurFood - Loss;
+                CurPet = CurPet - Loss;
+                CurSleep = CurSleep - Loss;
+                CurWash = CurWash - Loss;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
+                        TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
+                        TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
+                        TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
+                    }
+                });
+//                completeTask();
+            }
+
+//            private void completeTask() {
+//                try {
+//                     Thread.sleep(1000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+        }
+
+        Timer timer=new Timer();
+        TimerTask task=new MyTimerTask();
+        timer.scheduleAtFixedRate(task,3000,3000);
+ }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        AppOpenedBefore = 1;
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        TextView nameTextView = (TextView) findViewById(R.id.TextViewName);
+        editor.putString("name", nameTextView.getText().toString());
+        // Commit the edits!
+        editor.apply();
     }
 
+
+
 }
+
 
 

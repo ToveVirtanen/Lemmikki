@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/TextView3"
+        android:id="@+id/TextViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Lemmikki"
@@ -19,8 +19,45 @@
         android:layout_marginLeft="4dp"
         />
 
+    <TextView
+        android:id="@+id/TextViewFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewName"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewWash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewFood"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewPet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewWash"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewSleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewPet"
+        android:layout_marginLeft="4dp"
+        />
+
     <EditText
-        android:id="@+id/EditText1"
+        android:id="@+id/EditTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="invisible"
@@ -29,7 +66,7 @@
 
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/buttonFeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Feed"
@@ -39,18 +76,18 @@
         />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonWash"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wash"
         android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@id/button1"
+        android:layout_toEndOf="@id/buttonFeed"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="5dp"
         />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/buttonSleep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sleep"
@@ -60,19 +97,19 @@
         />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/buttonPet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Pet"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@id/button4"
+        android:layout_toStartOf="@id/buttonSleep"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="5dp"
         />
 
 
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/buttonSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Settings"
@@ -82,21 +119,32 @@
         />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/buttonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:text="Insert name"
+        android:text="Change Name"
         android:visibility="visible"
+        />
+
+    <Button
+        android:id="@+id/buttonDeleteSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/buttonName"
+        android:text="Delete Settings"
+        android:visibility="invisible"
         />
 
     <ImageView
         android:id="@+id/egg"
-        android:layout_width="200dp"
-        android:layout_height="195dp"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
         android:src="@drawable/egg"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>
