@@ -18,6 +18,43 @@
         android:textColor="@color/colorAccent"
         android:textSize="10pt" />
 
+    <TextView
+        android:id="@+id/TextViewFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewName"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewWash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewFood"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewPet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewWash"
+        android:layout_marginLeft="4dp"
+        />
+
+    <TextView
+        android:id="@+id/TextViewSleep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10pt"
+        android:layout_below="@id/TextViewPet"
+        android:layout_marginLeft="4dp"
+        />
+
     <EditText
         android:id="@+id/EditTextName"
         android:layout_width="wrap_content"
@@ -105,7 +142,8 @@
         android:layout_height="256dp"
         android:src="@drawable/egg"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
 
 
 </RelativeLayout>
