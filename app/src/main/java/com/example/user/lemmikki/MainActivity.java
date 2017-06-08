@@ -170,15 +170,6 @@ import static com.example.user.lemmikki.R.id.main_container;
         };
         buttonName.setOnClickListener(listenerName);
 
-//        final Button buttonDelSet = (Button) findViewById(R.id.buttonDelSet);
-//        View.OnClickListener listenerDelSet = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                settings=null;
-//            }
-//        };
-//        buttonDelSet.setOnClickListener(listenerDelSet);
-
         final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
         final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
         final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
@@ -187,21 +178,6 @@ import static com.example.user.lemmikki.R.id.main_container;
         TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
         TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
         TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
-//        while (CurFood>0) {
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    CurFood = CurFood - Loss;
-//                    CurPet = CurPet - Loss;
-//                    CurSleep = CurSleep - Loss;
-//                    CurWash = CurWash - Loss;
-//                    TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
-//                    TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
-//                    TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
-//                    TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
-//                }
-//            }, 3000);
-//        }
         class MyTimerTask extends TimerTask {
 
             @Override
@@ -219,16 +195,7 @@ import static com.example.user.lemmikki.R.id.main_container;
                         TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
                     }
                 });
-//                completeTask();
             }
-
-//            private void completeTask() {
-//                try {
-//                     Thread.sleep(1000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
 
         Timer timer=new Timer();
