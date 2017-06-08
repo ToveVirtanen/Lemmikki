@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 if (BackGroundColorCurr==0) {
                     BackGroundColorCurr = 1;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
-                    bgElement.setBackgroundColor(Color.BLACK);
+                    bgElement.setBackgroundColor(getResources().getColor(R.color.navy));
                     imageView.setImageResource(R.drawable.sleepable);
                 } else {
                     BackGroundColorCurr=0;

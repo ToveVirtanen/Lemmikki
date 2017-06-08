@@ -8,16 +8,15 @@
     android:id="@+id/main_container">
 
 
-
     <TextView
         android:id="@+id/TextViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lemmikki"
-        android:textSize="10pt"
-        android:layout_marginTop="7dp"
         android:layout_marginLeft="4dp"
-        />
+        android:layout_marginTop="7dp"
+        android:text="Lemmikki"
+        android:textColor="@color/colorAccent"
+        android:textSize="10pt" />
 
     <EditText
         android:id="@+id/EditTextName"
