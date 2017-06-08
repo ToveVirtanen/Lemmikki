@@ -17,6 +17,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static com.example.user.lemmikki.R.id.EditTextName;
 import static com.example.user.lemmikki.R.id.TextViewName;
 import static com.example.user.lemmikki.R.id.buttonFeed;
@@ -33,11 +36,26 @@ public class MainActivity extends AppCompatActivity {
     int CheckerEditTextName = 0;
     int AppOpenedBefore = 0;
 
+    public final int MaxFood = 1000;
+    public final int MaxWash = 1000;
+    public final int MaxPet = 1000;
+    public final int MaxSleep = 1000;
+    public int CurFood;
+    public int CurWash;
+    public int CurPet;
+    public int CurSleep;
+    public int Loss;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        CurFood=MaxFood;
+        CurWash=MaxWash;
+        CurPet=MaxPet;
+        CurSleep=MaxSleep;
+        Loss=1;
 
 //      Restore preferences
         TextView textViewName = (TextView) findViewById(R.id.TextViewName);
@@ -156,14 +174,46 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        };
 //        buttonDelSet.setOnClickListener(listenerDelSet);
+
+        final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
+        final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
+        final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
+        final TextView TextViewSleep = (TextView) findViewById(R.id.TextViewSleep);
+        TextViewFood.setText("Food: "+CurFood + "/" + MaxFood);
+        TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
+        TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
+        TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
+        class MyTimerTask extends TimerTask {
+
+            @Override
+            public void run() {
+                CurFood = CurFood - Loss;
+                CurPet = CurPet - Loss;
+                CurSleep = CurSleep - Loss;
+                CurWash = CurWash - Loss;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
+                        TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
+                        TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
+                        TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
+                    }
+                });
+            }
+        }
+
+        Timer timer=new Timer();
+        TimerTask task=new MyTimerTask();
+        timer.scheduleAtFixedRate(task,3000,3000);
+
+
     }
 
     @Override
     protected void onPause(){
         super.onPause();
         AppOpenedBefore = 1;
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = settings.edit();
         TextView nameTextView = (TextView) findViewById(R.id.TextViewName);
