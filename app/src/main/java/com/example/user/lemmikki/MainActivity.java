@@ -19,8 +19,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,18 +51,26 @@ public class MainActivity extends AppCompatActivity {
     public final int MaxWash = 1000;
     public final int MaxPet = 1000;
     public final int MaxSleep = 1000;
+
     public int TimerCycle;
     public int BaseTimerCycle;
-    public int Happiness;
+    public long Happiness;
+    public long MillsOnExit;
     public int CurExp;
     public int NextLevelExp;
     public int CurLevel;
-    public int CurFood;
-    public int CurWash;
-    public int CurPet;
-    public int CurSleep;
+    public long CurFood;
+    public long CurWash;
+    public long CurPet;
+    public long CurSleep;
     public int Loss;
     public int Gain;
+    public long doIt;
+    public long MyMills;
+    public long currentMils;
+
+    String dateStr = new String();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +97,61 @@ public class MainActivity extends AppCompatActivity {
 //      settings=null;
         if (settings!=null) {
             textViewName.setText(settings.getString("Name","Unnamed"));
-            CurFood = (settings.getInt("CurFood", 1000));
-            CurWash = (settings.getInt("CurWash", 1000));
-            CurPet = (settings.getInt("CurPet", 1000));
-            CurSleep = (settings.getInt("CurSleep", 1000));
+            CurFood = (settings.getLong("CurFood", 1000));
+            CurWash = (settings.getLong("CurWash", 1000));
+            CurPet = (settings.getLong("CurPet", 1000));
+            CurSleep = (settings.getLong("CurSleep", 1000));
             CurExp = (settings.getInt("CurExp", 0));
             CurLevel = (settings.getInt("CurLevel", 1));
             BackGroundColorCurr = (settings.getInt("BackGroundColor", 1));
+            MillsOnExit = (settings.getLong("MilsOnExit", 1));
+        }
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss Z", new Locale("en"));
+        MyMills=MillsOnExit;
+        //получаем текущие миллисекунды
+        currentMils=System.currentTimeMillis();
+        //теперь можно сравнивать
+        doIt=currentMils-MyMills;
+        System.out.print(doIt);
+
+        switch (BackGroundColorCurr){
+            case 0:
+                CurFood = CurFood - (doIt*Loss)/1000;
+                if (CurFood<0){
+                    CurFood = 0;
+                }
+                CurWash = CurWash - (doIt*Loss)/1000;
+                if (CurWash<0){
+                    CurWash = 0;
+                }
+                CurPet = CurPet - (doIt*Loss)/1000;
+                if (CurPet<0){
+                    CurPet = 0;
+                }
+                CurSleep = CurSleep - (doIt*Loss)/1000;
+                if (CurSleep<0){
+                    CurSleep = 0;
+                }
+                break;
+            case 1:
+                CurFood = CurFood - (doIt*Loss)/1000;
+                if (CurFood<0){
+                    CurFood = 0;
+                }
+                CurWash = CurWash - (doIt*Loss)/1000;
+                if (CurWash<0){
+                    CurWash = 0;
+                }
+                CurPet = CurPet - (doIt*Loss)/1000;
+                if (CurPet<0){
+                    CurPet = 0;
+                }
+                CurSleep = CurSleep + (doIt*Loss)/4000;
+                if (CurSleep>MaxSleep){
+                    CurSleep = 1000;
+                }
+                break;
         }
 
         final ImageView imageView = (ImageView) findViewById(R.id.egg);
@@ -127,6 +189,9 @@ public class MainActivity extends AppCompatActivity {
         TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
         TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
         TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
+        TextViewLevel.setText("Level: " + CurLevel);
+        TextViewExp.setText("Exp: " + CurExp + "/" + NextLevelExp);
+        TextViewHappinnes.setText("Happiness: " + Happiness);
 //buttons
         Button buttonFeed = (Button) findViewById(R.id.buttonFeed);
         View.OnClickListener listenerFeed = new View.OnClickListener() {
@@ -278,9 +343,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (BackGroundColorCurr){
                     case 0:
                         CurFood = CurFood - Loss;
+                        if (CurFood<0){
+                            CurFood=0;
+                        }
                         CurPet = CurPet - Loss;
+                        if (CurPet<0){
+                            CurPet=0;
+                        }
                         CurSleep = CurSleep - Loss;
+                        if (CurSleep<0){
+                            CurSleep=0;
+                        }
                         CurWash = CurWash - Loss;
+                        if (CurWash<0){
+                            CurWash=0;
+                        }
                         Happiness = (CurPet*CurPet+CurWash*CurWash+CurPet*CurPet+CurSleep*CurSleep)/4000;
                         if (Happiness > 600){
                             CurExp++;
@@ -306,8 +383,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 1:
                         CurFood = CurFood - Loss;
+                        if (CurFood<0){
+                            CurFood=0;
+                        }
                         CurPet = CurPet - Loss;
+                        if (CurPet<0){
+                            CurPet=0;
+                        }
                         CurWash = CurWash - Loss;
+                        if (CurWash<0){
+                            CurWash=0;
+                        }
                         if (CurSleep<(MaxFood-4*Loss)) {
                             CurSleep = CurSleep + 4*Loss;
                         } else {
@@ -342,7 +428,7 @@ public class MainActivity extends AppCompatActivity {
 
         Timer timer=new Timer();
         TimerTask task=new TimerTaskMain();
-        timer.scheduleAtFixedRate(task, 1, BaseTimerCycle);
+        timer.scheduleAtFixedRate(task, 3000, BaseTimerCycle);
 //        timer.scheduleAtFixedRate(task, 1, TimerCycle);
 
     }
@@ -351,22 +437,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         AppOpenedBefore = 1;
+        MillsOnExit=System.currentTimeMillis();
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = settings.edit();
         TextView nameTextView = (TextView) findViewById(R.id.TextViewName);
         editor.putString("Name", nameTextView.getText().toString());
-        editor.putInt("CurFood", CurFood);
-        editor.putInt("CurWash", CurWash);
-        editor.putInt("CurPet", CurPet);
-        editor.putInt("CurSleep", CurSleep);
+        editor.putLong("CurFood", CurFood);
+        editor.putLong("CurWash", CurWash);
+        editor.putLong("CurPet", CurPet);
+        editor.putLong("CurSleep", CurSleep);
+        editor.putLong("MilsOnExit", MillsOnExit);
         editor.putInt("CurExp", CurExp);
         editor.putInt("CurLevel", CurLevel);
         editor.putInt("BackGroundColor", BackGroundColorCurr);
         // Commit the edits!
         editor.apply();
     }
-
-
 
 }
 
