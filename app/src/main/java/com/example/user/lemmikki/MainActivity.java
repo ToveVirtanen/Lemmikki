@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
 //                settings=null;
 //            }
 //        };
-//        buttonDelSet.setOnClickListener(listenerDelSet);
+//        buttonDelSet.setOnClickListener(listenerDelSet)
 
 //timer
         class TimerTaskMain extends TimerTask {
