@@ -29,11 +29,8 @@ import java.util.TimerTask;
 import static com.example.user.lemmikki.R.id.EditTextName;
 import static com.example.user.lemmikki.R.id.TextViewFood;
 import static com.example.user.lemmikki.R.id.TextViewName;
-import static com.example.user.lemmikki.R.id.buttonFeed;
 import static com.example.user.lemmikki.R.id.buttonName;
-import static com.example.user.lemmikki.R.id.buttonPet;
 import static com.example.user.lemmikki.R.id.buttonSleep;
-import static com.example.user.lemmikki.R.id.buttonWash;
 import static com.example.user.lemmikki.R.id.main_container;
 
 public class MainActivity extends AppCompatActivity {
