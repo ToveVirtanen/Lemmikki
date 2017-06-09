@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
@@ -19,15 +21,14 @@ import android.widget.TextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.example.user.lemmikki.R.id.EditTextName;
-import static com.example.user.lemmikki.R.id.TextViewName;
-import static com.example.user.lemmikki.R.id.buttonFeed;
-import static com.example.user.lemmikki.R.id.buttonName;
-import static com.example.user.lemmikki.R.id.buttonPet;
-import static com.example.user.lemmikki.R.id.buttonSleep;
-import static com.example.user.lemmikki.R.id.buttonWash;
-import static com.example.user.lemmikki.R.id.main_container;
+//import static com.example.user.lemmikki.R.id.EditTextName;
+//import static com.example.user.lemmikki.R.id.TextViewName;
+//import static com.example.user.lemmikki.R.id.ImageButtonFeed;
+//import static com.example.user.lemmikki.R.id.buttonName;
+//
+//import static com.example.user.lemmikki.R.id.buttonSleep;
+//import static com.example.user.lemmikki.R.id.buttonWash;
+//import static com.example.user.lemmikki.R.id.main_container;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         final ImageView imageView = (ImageView) findViewById(R.id.egg);
 
-        Button buttonFeed = (Button) findViewById(R.id.buttonFeed);
+        ImageButton ImageButtonFeed = (ImageButton) findViewById(R.id.ImageButtonFeed);
         View.OnClickListener listenerFeed = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        buttonFeed.setOnClickListener(listenerFeed);
+        ImageButtonFeed.setOnClickListener(listenerFeed);
 
-        Button buttonWash = (Button) findViewById(R.id.buttonWash);
+        ImageButton ImageButtonWash = (ImageButton) findViewById(R.id.ImageButtonWash);
         View.OnClickListener listenerWash = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,9 +102,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        buttonWash.setOnClickListener(listenerWash);
+        ImageButtonWash.setOnClickListener(listenerWash);
 
-        Button buttonPet = (Button) findViewById(R.id.buttonPet);
+        ImageButton ImageButtonPet = (ImageButton) findViewById(R.id.ImageButtonPet);
         View.OnClickListener listenerPet = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-        buttonPet.setOnClickListener(listenerPet);
+        ImageButtonPet.setOnClickListener(listenerPet);
 
-        Button buttonSleep = (Button) findViewById(R.id.buttonSleep);
+        ImageButton ImageButtonSleep = (ImageButton) findViewById(R.id.ImageButtonSleep);
         View.OnClickListener listenerSleep = new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         };
-        buttonSleep.setOnClickListener(listenerSleep);
+        ImageButtonSleep.setOnClickListener(listenerSleep);
 
         final Button buttonName = (Button) findViewById(R.id.buttonName);
         View.OnClickListener listenerName = new View.OnClickListener() {
