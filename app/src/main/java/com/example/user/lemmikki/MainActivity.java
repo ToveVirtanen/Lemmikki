@@ -21,6 +21,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.example.user.lemmikki.R.id.EditTextName;
+import static com.example.user.lemmikki.R.id.TextViewFood;
 import static com.example.user.lemmikki.R.id.TextViewName;
 import static com.example.user.lemmikki.R.id.buttonFeed;
 import static com.example.user.lemmikki.R.id.buttonName;
@@ -40,34 +41,78 @@ public class MainActivity extends AppCompatActivity {
     public final int MaxWash = 1000;
     public final int MaxPet = 1000;
     public final int MaxSleep = 1000;
+    public int TimerCycle;
+    public int BaseTimerCycle;
+    public int Hapinnes;
+    public int CurExp;
+    public int NextLevelExp;
+    public int CurLevel;
     public int CurFood;
     public int CurWash;
     public int CurPet;
     public int CurSleep;
     public int Loss;
+    public int Gain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        CurFood=MaxFood;
-        CurWash=MaxWash;
-        CurPet=MaxPet;
-        CurSleep=MaxSleep;
         Loss=1;
+        Gain=100;
+        BaseTimerCycle = 3000;
+
+        final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
+        final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
+        final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
+        final TextView TextViewSleep = (TextView) findViewById(R.id.TextViewSleep);
+        final TextView textViewName = (TextView) findViewById(R.id.TextViewName);
+        final EditText editTextName = (EditText) findViewById(R.id.EditTextName);
 
 //      Restore preferences
-        TextView textViewName = (TextView) findViewById(R.id.TextViewName);
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 //      settings=null;
         if (settings!=null) {
-            textViewName.setText(settings.getString("name","unnamed"));
+            textViewName.setText(settings.getString("Name","Unnamed"));
+            CurFood = (settings.getInt("CurFood", 1000));
+            CurWash = (settings.getInt("CurWash", 1000));
+            CurPet = (settings.getInt("CurPet", 1000));
+            CurSleep = (settings.getInt("CurSleep", 1000));
+            CurExp = (settings.getInt("CurExp", 0));
+            CurLevel = (settings.getInt("CurLevel", 1));
+            BackGroundColorCurr = (settings.getInt("BackGroundColor", 1));
+        }
+
+        final ImageView imageView = (ImageView) findViewById(R.id.egg);
+
+        if (BackGroundColorCurr==0) {
+            RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
+            bgElement.setBackgroundColor(getResources().getColor(R.color.LightPink));
+            TextViewFood.setTextColor(getResources().getColor(R.color.Black));
+            TextViewWash.setTextColor(getResources().getColor(R.color.Black));
+            TextViewPet.setTextColor(getResources().getColor(R.color.Black));
+            TextViewSleep.setTextColor(getResources().getColor(R.color.Black));
+            textViewName.setTextColor(getResources().getColor(R.color.Black));
+            editTextName.setTextColor(getResources().getColor(R.color.Black));
+            imageView.setImageResource(R.drawable.egg);
+        } else {
+            RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
+            bgElement.setBackgroundColor(getResources().getColor(R.color.Black));
+            TextViewFood.setTextColor(getResources().getColor(R.color.White));
+            TextViewWash.setTextColor(getResources().getColor(R.color.White));
+            TextViewPet.setTextColor(getResources().getColor(R.color.White));
+            TextViewSleep.setTextColor(getResources().getColor(R.color.White));
+            textViewName.setTextColor(getResources().getColor(R.color.White));
+            editTextName.setTextColor(getResources().getColor(R.color.White));
+            imageView.setImageResource(R.drawable.sleepable);
         }
 
 
-
-        final ImageView imageView = (ImageView) findViewById(R.id.egg);
+        TextViewFood.setText("Food: "+CurFood + "/" + MaxFood);
+        TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
+        TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
+        TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
 
         Button buttonFeed = (Button) findViewById(R.id.buttonFeed);
         View.OnClickListener listenerFeed = new View.OnClickListener() {
@@ -75,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
                     imageView.setImageResource(R.drawable.stars);
+                    if (CurFood<(MaxFood-Gain)) {
+                        CurFood = CurFood + Gain;
+                    } else {
+                        CurFood = MaxFood;
+                    }
+                    TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -92,6 +143,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
                     imageView.setImageResource(R.drawable.washable);
+                    if (CurWash<(MaxWash-Gain)) {
+                        CurWash = CurWash + Gain;
+                    } else {
+                        CurWash = MaxWash;
+                    }
+                    TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -109,6 +166,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (BackGroundColorCurr==0) {
                     imageView.setImageResource(R.drawable.lovable);
+                    if (CurPet<(MaxPet-Gain)) {
+                        CurPet = CurPet + Gain;
+                    } else {
+                        CurPet = MaxPet;
+                    }
+                    TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -128,12 +191,25 @@ public class MainActivity extends AppCompatActivity {
                 if (BackGroundColorCurr==0) {
                     BackGroundColorCurr = 1;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
-                    bgElement.setBackgroundColor(getResources().getColor(R.color.navy));
+                    bgElement.setBackgroundColor(getResources().getColor(R.color.Black));
+                    bgElement.setBackgroundColor(getResources().getColor(R.color.Black));
+                    TextViewFood.setTextColor(getResources().getColor(R.color.White));
+                    TextViewWash.setTextColor(getResources().getColor(R.color.White));
+                    TextViewPet.setTextColor(getResources().getColor(R.color.White));
+                    TextViewSleep.setTextColor(getResources().getColor(R.color.White));
+                    textViewName.setTextColor(getResources().getColor(R.color.White));
+                    editTextName.setTextColor(getResources().getColor(R.color.White));
                     imageView.setImageResource(R.drawable.sleepable);
                 } else {
                     BackGroundColorCurr=0;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
                     bgElement.setBackgroundColor(getResources().getColor(R.color.LightPink));
+                    TextViewFood.setTextColor(getResources().getColor(R.color.Black));
+                    TextViewWash.setTextColor(getResources().getColor(R.color.Black));
+                    TextViewPet.setTextColor(getResources().getColor(R.color.Black));
+                    TextViewSleep.setTextColor(getResources().getColor(R.color.Black));
+                    textViewName.setTextColor(getResources().getColor(R.color.Black));
+                    editTextName.setTextColor(getResources().getColor(R.color.Black));
                     imageView.setImageResource(R.drawable.egg);
                 }
             }
@@ -175,38 +251,55 @@ public class MainActivity extends AppCompatActivity {
 //        };
 //        buttonDelSet.setOnClickListener(listenerDelSet);
 
-        final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
-        final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
-        final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
-        final TextView TextViewSleep = (TextView) findViewById(R.id.TextViewSleep);
-        TextViewFood.setText("Food: "+CurFood + "/" + MaxFood);
-        TextViewWash.setText("Wash: "+CurWash + "/" + MaxWash);
-        TextViewPet.setText("Pet: "+CurPet + "/" + MaxPet);
-        TextViewSleep.setText("Sleep: "+CurSleep + "/" + MaxSleep);
-        class MyTimerTask extends TimerTask {
-
+        class TimerTaskMain extends TimerTask {
             @Override
             public void run() {
-                CurFood = CurFood - Loss;
-                CurPet = CurPet - Loss;
-                CurSleep = CurSleep - Loss;
-                CurWash = CurWash - Loss;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
-                        TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
-                        TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
-                        TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
-                    }
-                });
+                switch (BackGroundColorCurr){
+                    case 0:
+                        CurFood = CurFood - Loss;
+                        CurPet = CurPet - Loss;
+                        CurSleep = CurSleep - Loss;
+                        CurWash = CurWash - Loss;
+//                        TimerCycle = BaseTimerCycle/2;
+                        BaseTimerCycle = 3000;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
+                                TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
+                                TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
+                                TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
+                            }
+                        });
+                        break;
+                    case 1:
+                        CurFood = CurFood - Loss;
+                        CurPet = CurPet - Loss;
+                        CurWash = CurWash - Loss;
+                        if (CurSleep<(MaxFood-2*Loss)) {
+                            CurSleep = CurSleep + 2*Loss;
+                        } else {
+                            CurSleep = MaxSleep;
+                        }
+//                        TimerCycle = BaseTimerCycle;
+                        BaseTimerCycle = 6000;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                TextViewFood.setText("Food: " + CurFood + "/" + MaxFood);
+                                TextViewWash.setText("Wash: " + CurWash + "/" + MaxWash);
+                                TextViewPet.setText("Pet: " + CurPet + "/" + MaxPet);
+                                TextViewSleep.setText("Sleep: " + CurSleep + "/" + MaxSleep);
+                            }
+                        });
+                        break;
+                }
             }
         }
 
         Timer timer=new Timer();
-        TimerTask task=new MyTimerTask();
-        timer.scheduleAtFixedRate(task,3000,3000);
-
+        TimerTask task=new TimerTaskMain();
+        timer.scheduleAtFixedRate(task, 1000, BaseTimerCycle);
 
     }
 
@@ -217,7 +310,14 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = settings.edit();
         TextView nameTextView = (TextView) findViewById(R.id.TextViewName);
-        editor.putString("name", nameTextView.getText().toString());
+        editor.putString("Name", nameTextView.getText().toString());
+        editor.putInt("CurFood", CurFood);
+        editor.putInt("CurWash", CurWash);
+        editor.putInt("CurPet", CurPet);
+        editor.putInt("CurSleep", CurSleep);
+        editor.putInt("CurExp", CurExp);
+        editor.putInt("CurLevel", CurLevel);
+        editor.putInt("BackGroundColor", BackGroundColorCurr);
         // Commit the edits!
         editor.apply();
     }

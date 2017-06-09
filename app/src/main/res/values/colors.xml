@@ -7,5 +7,8 @@
     <color name="darkred">#FFCC0000</color>
     <color name="darkpurple">#FF9933CC</color>
     <color name="navy">#000080</color>
+    <color name="Black">#000000</color>
+    <color name="White">#FEFEFE</color>
+
 
 </resources>
