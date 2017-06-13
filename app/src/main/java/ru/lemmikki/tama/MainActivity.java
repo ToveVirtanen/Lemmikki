@@ -53,11 +53,11 @@ public class MainActivity extends AppCompatActivity {
     EditText editTextName;
     ImageView imageView;
 
-    int egg[] = new int[]{R.drawable.egg, R.drawable.dog, R.drawable.rabbit};
-    int washable[] = new int[]{R.drawable.washable, R.drawable.dogwash, R.drawable.rabbitwashable};
-    int eatable[] = new int[]{R.drawable.stars, R.drawable.dogeating, R.drawable.rabbiteating};
-    int sleepable[] = new int[]{R.drawable.sleepable, R.drawable.dogsleep, R.drawable.rabbitsleepable};
-    int lovable[] = new int[]{R.drawable.lovable, R.drawable.doglove, R.drawable.rabbitlovable};
+    int egg[] = new int[]{0, R.drawable.egg, R.drawable.dog, R.drawable.rabbit};
+    int washable[] = new int[]{0, R.drawable.washable, R.drawable.dogwash, R.drawable.rabbitwashable};
+    int eatable[] = new int[]{0, R.drawable.stars, R.drawable.dogeating, R.drawable.rabbiteating};
+    int sleepable[] = new int[]{0, R.drawable.sleepable, R.drawable.dogsleep, R.drawable.rabbitsleepable};
+    int lovable[] = new int[]{0, R.drawable.lovable, R.drawable.doglove, R.drawable.rabbitlovable};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listenerFeed = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (BackGroundColorCurr == 1)
+                if (BackGroundColorCurr == 0)
                     return;
                 imageView.setImageResource(eatable[CurLevel]);
                 if (CurFood < (MaxFood - Gain)) {
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listenerWash = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (BackGroundColorCurr == 1)
+                if (BackGroundColorCurr == 0)
                     return;
                 imageView.setImageResource(washable[CurLevel]);
                 if (CurWash < (MaxWash - Gain)) {
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener listenerPet = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (BackGroundColorCurr == 1)
+                if (BackGroundColorCurr == 0)
                     return;
                 imageView.setImageResource(lovable[CurLevel]);
                 if (CurPet < (MaxPet - Gain)) {

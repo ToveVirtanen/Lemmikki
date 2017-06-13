@@ -24,7 +24,7 @@ public class TimerTaskMain extends TimerTask {
         if (act.CurWash < 0) {
             act.CurWash = 0;
         }
-        if (act.BackGroundColorCurr == 1) {
+        if (act.BackGroundColorCurr == 0) {
             if (act.CurSleep < (act.MaxFood - 4 * act.Loss)) {
                 act.CurSleep += 4 * act.Loss;
             } else {
