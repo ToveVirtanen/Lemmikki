@@ -1,64 +1,45 @@
 package com.example.user.lemmikki;
 
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.example.user.lemmikki.R.id.EditTextName;
-import static com.example.user.lemmikki.R.id.TextViewFood;
-import static com.example.user.lemmikki.R.id.TextViewName;
-import static com.example.user.lemmikki.R.id.buttonFeed;
-import static com.example.user.lemmikki.R.id.buttonName;
-import static com.example.user.lemmikki.R.id.buttonPet;
-import static com.example.user.lemmikki.R.id.buttonSleep;
-import static com.example.user.lemmikki.R.id.buttonWash;
-import static com.example.user.lemmikki.R.id.main_container;
-
 public class MainActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
-    int BackGroundColorCurr = 0;
+    int BackGroundColorCurr = 1;
     int CheckerEditTextName = 0;
     int AppOpenedBefore = 0;
 
-    public final int MaxFood = 1000;
-    public final int MaxWash = 1000;
-    public final int MaxPet = 1000;
-    public final int MaxSleep = 1000;
+    public final int MaxFood = 100;
+    public final int MaxWash = 100;
+    public final int MaxPet = 100;
+    public final int MaxSleep = 100;
+    public int CurLevel = 0;
+    public int CurExp = 0;
 
     public int TimerCycle;
     public int BaseTimerCycle;
     public long Happiness;
     public long MillsOnExit;
-    public int CurExp;
+
     public int NextLevelExp;
-    public int CurLevel;
     public long CurFood;
     public long CurWash;
     public long CurPet;
@@ -70,6 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public long currentMils;
 
     String dateStr = new String();
+    int egg[] = new int[]{R.drawable.egg, R.drawable.egg,R.drawable.egg,R.drawable.dog, R.drawable.dog,R.drawable.dog,R.drawable.rabbit,R.drawable.rabbit,R.drawable.rabbit};
+    int washable[] = new int[]{R.drawable.washable, R.drawable.washable,R.drawable.washable,R.drawable.dogwash,R.drawable.dogwash,R.drawable.dogwash, R.drawable.rabbitwashable, R.drawable.rabbitwashable, R.drawable.rabbitwashable};
+    int eatable[] = new int[]{R.drawable.stars,R.drawable.stars,R.drawable.stars, R.drawable.dogeating,R.drawable.dogeating,R.drawable.dogeating, R.drawable.rabbiteatable, R.drawable.rabbiteatable, R.drawable.rabbiteatable};
+    int sleepable[] = new int[]{R.drawable.sleepable, R.drawable.sleepable,R.drawable.sleepable,R.drawable.dogsleep,R.drawable.dogsleep,R.drawable.dogsleep, R.drawable.rabbitsleepable, R.drawable.rabbitsleepable, R.drawable.rabbitsleepable};
+    int lovable[] = new int[]{R.drawable.lovable, R.drawable.lovable,R.drawable.lovable,R.drawable.doglove,R.drawable.doglove,R.drawable.doglove, R.drawable.rabbitlovable, R.drawable.rabbitlovable, R.drawable.rabbitlovable};
 
 
     @Override
@@ -78,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Loss=1;
-        Gain=100;
+        Gain=10;
         BaseTimerCycle = 3000;
-        NextLevelExp = 1000;
+        NextLevelExp = 100;
 //first time drawing interface
         final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
         final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
@@ -97,64 +83,63 @@ public class MainActivity extends AppCompatActivity {
 //      settings=null;
         if (settings!=null) {
             textViewName.setText(settings.getString("Name","Unnamed"));
-            CurFood = (settings.getLong("CurFood", 1000));
-            CurWash = (settings.getLong("CurWash", 1000));
-            CurPet = (settings.getLong("CurPet", 1000));
-            CurSleep = (settings.getLong("CurSleep", 1000));
+            CurFood = (settings.getLong("CurFood", 100));
+            CurWash = (settings.getLong("CurWash", 100));
+            CurPet = (settings.getLong("CurPet", 100));
+            CurSleep = (settings.getLong("CurSleep", 100));
             CurExp = (settings.getInt("CurExp", 0));
-            CurLevel = (settings.getInt("CurLevel", 1));
+            CurLevel = (settings.getInt("CurLevel", 0));
             BackGroundColorCurr = (settings.getInt("BackGroundColor", 1));
             MillsOnExit = (settings.getLong("MilsOnExit", 1));
         }
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss Z", new Locale("en"));
         MyMills=MillsOnExit;
-        //получаем текущие миллисекунды
         currentMils=System.currentTimeMillis();
-        //теперь можно сравнивать
         doIt=currentMils-MyMills;
         System.out.print(doIt);
 
-        switch (BackGroundColorCurr){
-            case 0:
-                CurFood = CurFood - (doIt*Loss)/1000;
-                if (CurFood<0){
-                    CurFood = 0;
-                }
-                CurWash = CurWash - (doIt*Loss)/1000;
-                if (CurWash<0){
-                    CurWash = 0;
-                }
-                CurPet = CurPet - (doIt*Loss)/1000;
-                if (CurPet<0){
-                    CurPet = 0;
-                }
-                CurSleep = CurSleep - (doIt*Loss)/1000;
-                if (CurSleep<0){
-                    CurSleep = 0;
-                }
-                break;
-            case 1:
-                CurFood = CurFood - (doIt*Loss)/1000;
-                if (CurFood<0){
-                    CurFood = 0;
-                }
-                CurWash = CurWash - (doIt*Loss)/1000;
-                if (CurWash<0){
-                    CurWash = 0;
-                }
-                CurPet = CurPet - (doIt*Loss)/1000;
-                if (CurPet<0){
-                    CurPet = 0;
-                }
-                CurSleep = CurSleep + (doIt*Loss)/4000;
-                if (CurSleep>MaxSleep){
-                    CurSleep = 1000;
-                }
-                break;
-        }
+//        switch (BackGroundColorCurr){
+//            case 0:
+//                CurFood = CurFood - (doIt*Loss)/1000;
+//                if (CurFood<0){
+//                    CurFood = 0;
+//                }
+//                CurWash = CurWash - (doIt*Loss)/1000;
+//                if (CurWash<0){
+//                    CurWash = 0;
+//                }
+//                CurPet = CurPet - (doIt*Loss)/1000;
+//                if (CurPet<0){
+//                    CurPet = 0;
+//                }
+//                CurSleep = CurSleep - (doIt*Loss)/1000;
+//                if (CurSleep<0){
+//                    CurSleep = 0;
+//                }
+//                break;
+//            case 1:
+//                CurFood = CurFood - (doIt*Loss)/1000;
+//                if (CurFood<0){
+//                    CurFood = 0;
+//                }
+//                CurWash = CurWash - (doIt*Loss)/1000;
+//                if (CurWash<0){
+//                    CurWash = 0;
+//                }
+//                CurPet = CurPet - (doIt*Loss)/1000;
+//                if (CurPet<0){
+//                    CurPet = 0;
+//                }
+//                CurSleep = CurSleep + (doIt*Loss)/4000;
+//                if (CurSleep>MaxSleep){
+//                    CurSleep = 1000;
+//                }
+//                break;
+//        }
 
         final ImageView imageView = (ImageView) findViewById(R.id.egg);
+        imageView.setImageResource(egg[CurLevel]);
 
         if (BackGroundColorCurr==0) {
             RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
@@ -168,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             TextViewExp.setTextColor(getResources().getColor(R.color.Black));
             TextViewHappinnes.setTextColor(getResources().getColor(R.color.Black));
             editTextName.setTextColor(getResources().getColor(R.color.Black));
-            imageView.setImageResource(R.drawable.egg);
+//            imageView.setImageResource(R.drawable.egg);
         } else {
             RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
             bgElement.setBackgroundColor(getResources().getColor(R.color.Black));
@@ -181,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
             TextViewExp.setTextColor(getResources().getColor(R.color.White));
             TextViewHappinnes.setTextColor(getResources().getColor(R.color.White));
             editTextName.setTextColor(getResources().getColor(R.color.White));
-            imageView.setImageResource(R.drawable.sleepable);
+//            imageView.setImageResource(R.drawable.sleepable);
         }
 
 
@@ -193,12 +178,12 @@ public class MainActivity extends AppCompatActivity {
         TextViewExp.setText("Exp: " + CurExp + "/" + NextLevelExp);
         TextViewHappinnes.setText("Happiness: " + Happiness);
 //buttons
-        Button buttonFeed = (Button) findViewById(R.id.buttonFeed);
+        ImageButton ImageButtonFeed = (ImageButton) findViewById(R.id.ImageButtonFeed);
         View.OnClickListener listenerFeed = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
-                    imageView.setImageResource(R.drawable.stars);
+                    imageView.setImageResource(eatable[CurLevel]);
                     if (CurFood<(MaxFood-Gain)) {
                         CurFood = CurFood + Gain;
                     } else {
@@ -208,20 +193,20 @@ public class MainActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            imageView.setImageResource(R.drawable.egg);
+                            imageView.setImageResource(egg[CurLevel]);
                         }
                     }, 1000);
                 }
             }
         };
-        buttonFeed.setOnClickListener(listenerFeed);
+        ImageButtonFeed.setOnClickListener(listenerFeed);
 
-        Button buttonWash = (Button) findViewById(R.id.buttonWash);
+        ImageButton ImageButtonWash = (ImageButton) findViewById(R.id.ImageButtonWash);
         View.OnClickListener listenerWash = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr == 0) {
-                    imageView.setImageResource(R.drawable.washable);
+                    imageView.setImageResource(washable[CurLevel]);
                     if (CurWash<(MaxWash-Gain)) {
                         CurWash = CurWash + Gain;
                     } else {
@@ -231,20 +216,20 @@ public class MainActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            imageView.setImageResource(R.drawable.egg);
+                            imageView.setImageResource(egg[CurLevel]);
                         }
                     }, 1000);
                 }
             }
         };
-        buttonWash.setOnClickListener(listenerWash);
+        ImageButtonWash.setOnClickListener(listenerWash);
 
-        Button buttonPet = (Button) findViewById(R.id.buttonPet);
+        ImageButton ImageButtonPet = (ImageButton) findViewById(R.id.ImageButtonPet);
         View.OnClickListener listenerPet = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (BackGroundColorCurr==0) {
-                    imageView.setImageResource(R.drawable.lovable);
+                    imageView.setImageResource(lovable[CurLevel]);
                     if (CurPet<(MaxPet-Gain)) {
                         CurPet = CurPet + Gain;
                     } else {
@@ -254,16 +239,16 @@ public class MainActivity extends AppCompatActivity {
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            imageView.setImageResource(R.drawable.egg);
+                            imageView.setImageResource(egg[CurLevel]);
                         }
                     }, 1000);
                 }
             }
 
         };
-        buttonPet.setOnClickListener(listenerPet);
+        ImageButtonPet.setOnClickListener(listenerPet);
 
-        Button buttonSleep = (Button) findViewById(R.id.buttonSleep);
+        ImageButton ImageButtonSleep = (ImageButton) findViewById(R.id.ImageButtonSleep);
         View.OnClickListener listenerSleep = new View.OnClickListener() {
             @Override
             public void onClick(View v){
@@ -281,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                     TextViewLevel.setTextColor(getResources().getColor(R.color.White));
                     TextViewExp.setTextColor(getResources().getColor(R.color.White));
                     TextViewHappinnes.setTextColor(getResources().getColor(R.color.White));
-                    imageView.setImageResource(R.drawable.sleepable);
+                    imageView.setImageResource(sleepable[CurLevel]);
                 } else {
                     BackGroundColorCurr=0;
                     RelativeLayout bgElement = (RelativeLayout) findViewById(R.id.main_container);
@@ -295,12 +280,12 @@ public class MainActivity extends AppCompatActivity {
                     TextViewLevel.setTextColor(getResources().getColor(R.color.Black));
                     TextViewExp.setTextColor(getResources().getColor(R.color.Black));
                     TextViewHappinnes.setTextColor(getResources().getColor(R.color.Black));
-                    imageView.setImageResource(R.drawable.egg);
+                    imageView.setImageResource(egg[CurLevel]);
                 }
             }
 
         };
-        buttonSleep.setOnClickListener(listenerSleep);
+        ImageButtonSleep.setOnClickListener(listenerSleep);
 
         final Button buttonName = (Button) findViewById(R.id.buttonName);
         View.OnClickListener listenerName = new View.OnClickListener() {
@@ -336,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
 //        };
 //        buttonDelSet.setOnClickListener(listenerDelSet)
 
-//timer
         class TimerTaskMain extends TimerTask {
             @Override
             public void run() {
@@ -358,8 +342,8 @@ public class MainActivity extends AppCompatActivity {
                         if (CurWash<0){
                             CurWash=0;
                         }
-                        Happiness = (CurPet*CurPet+CurWash*CurWash+CurPet*CurPet+CurSleep*CurSleep)/4000;
-                        if (Happiness > 600){
+                        Happiness = (CurPet+CurWash+CurPet+CurSleep)/4;
+                        if (Happiness > 50){
                             CurExp++;
                         }
                         while (CurExp>=NextLevelExp) {
@@ -399,8 +383,8 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             CurSleep = MaxSleep;
                         }
-                        Happiness = (CurPet*CurPet+CurWash*CurWash+CurPet*CurPet+CurSleep*CurSleep)/4000;
-                        if (Happiness>600){
+                        Happiness = (CurPet+CurWash+CurFood+CurSleep)/4;
+                        if (Happiness > 50){
                             CurExp++;
                         }
                         while (CurExp>=NextLevelExp) {
