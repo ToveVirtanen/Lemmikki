@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
         Loss=1;
         Gain=10;
-        BaseTimerCycle = 60000;
+        BaseTimerCycle = 3000;
         NextLevelExp = 100;
+//first time drawing interface
         final TextView TextViewFood = (TextView) findViewById(R.id.TextViewFood);
         final TextView TextViewWash = (TextView) findViewById(R.id.TextViewWash);
         final TextView TextViewPet = (TextView) findViewById(R.id.TextViewPet);
@@ -77,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
         final TextView TextViewLevel = (TextView) findViewById(R.id.TextViewLevel);
         final EditText editTextName = (EditText) findViewById(R.id.EditTextName);
 
+//      Restore preferences
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+//      settings=null;
         if (settings!=null) {
             textViewName.setText(settings.getString("Name","Unnamed"));
             CurFood = (settings.getLong("CurFood", 100));
@@ -348,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
                             CurLevel++;
                         }
 //                        TimerCycle = BaseTimerCycle;
-                        BaseTimerCycle = 30000;
+                        BaseTimerCycle = 3000;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -389,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
                             CurLevel++;
                         }
 //                        TimerCycle = BaseTimerCycle*2;
-                        BaseTimerCycle = 60000;
+                        BaseTimerCycle = 6000;
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
