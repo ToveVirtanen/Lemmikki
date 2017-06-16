@@ -49,6 +49,6 @@ public class TimerTaskMain extends TimerTask {
         if (act.CurLevel == 4) {
             act.CurLevel = 3;
         }
-        act.updateTextViews();
+//        act.updateTextViews();
     }
 }
