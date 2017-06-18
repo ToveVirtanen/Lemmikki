@@ -1,11 +1,12 @@
 package ru.lemmikki.tama;
 
 import android.content.SharedPreferences;
+import android.view.View;
+import java.util.Timer;
+import java.util.TimerTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,8 +14,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 
 public class MainActivity extends AppCompatActivity {
